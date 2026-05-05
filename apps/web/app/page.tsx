@@ -16,8 +16,7 @@ export default function LandingPage() {
     >
       <header className="flex items-center justify-between px-8 py-5">
         <div className="flex items-center gap-3">
-          <Image src="/logo.png" alt="Rebat" width={36} height={36} className="rounded-xl" />
-          <span className="text-white font-bold text-xl tracking-tight">{isRTL ? 'رباط' : 'Rebat'}</span>
+          <Image src="/logo.png" alt="Rebat" width={44} height={44} />
         </div>
         <div className="flex items-center gap-3">
           <button

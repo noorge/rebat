@@ -52,8 +52,7 @@ export default function RegisterPage() {
             </button>
           </div>
           <Link href="/" className="inline-flex items-center gap-2.5 mb-6">
-            <Image src="/logo.png" alt="Rebat" width={40} height={40} className="rounded-xl" />
-            <span className="text-white font-bold text-xl">{isRTL ? 'رباط' : 'Rebat'}</span>
+            <Image src="/logo.png" alt="Rebat" width={56} height={56} />
           </Link>
           <h1 className="text-2xl font-bold text-white">{t('reg_title')}</h1>
           <p className="text-white/50 mt-1 text-sm">

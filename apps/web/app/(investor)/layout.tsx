@@ -38,11 +38,8 @@ function InvestorSidebar() {
       {/* Logo */}
       <div className="px-6 py-5 border-b border-white/10">
         <div className="flex items-center gap-3">
-          <Image src="/logo.png" alt="Rebat" width={36} height={36} className="rounded-xl flex-shrink-0" />
-          <div>
-            <div className="font-bold text-white text-sm">{isRTL ? 'رباط' : 'Rebat'}</div>
-            <div className="text-xs mt-0.5" style={{ color: '#CB6CE6' }}>{t('nav_investor_portal')}</div>
-          </div>
+          <Image src="/logo.png" alt="Rebat" width={44} height={44} className="flex-shrink-0" />
+          <div className="text-xs" style={{ color: '#CB6CE6' }}>{t('nav_investor_portal')}</div>
         </div>
       </div>
 
