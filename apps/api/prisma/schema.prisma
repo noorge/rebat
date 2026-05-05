@@ -1,0 +1,183 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  INVESTOR
+  ADMIN
+}
+
+enum UserStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+}
+
+enum KycStatus {
+  PENDING
+  SUBMITTED_TO_ABSHER
+  APPROVED
+  REJECTED
+}
+
+enum DocType {
+  PASSPORT
+  COMMERCIAL_REG
+  FINANCIAL_STMT
+  BANK_STMT
+}
+
+enum DocStatus {
+  PENDING
+  SUBMITTED
+  VERIFIED
+  REJECTED
+  EXPIRED
+}
+
+enum AppStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+}
+
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum OppStatus {
+  ACTIVE
+  CLOSED
+  DRAFT
+}
+
+model User {
+  id            String     @id @default(uuid())
+  email         String     @unique
+  password_hash String
+  role          Role       @default(INVESTOR)
+  status        UserStatus @default(PENDING)
+  created_at    DateTime   @default(now())
+  updated_at    DateTime   @updatedAt
+  investor      Investor?
+  audit_logs    AuditLog[]
+}
+
+model Investor {
+  id              String     @id @default(uuid())
+  user_id         String     @unique
+  full_name       String
+  nationality     String
+  passport_number String
+  company_name    String?
+  kyc_status      KycStatus  @default(PENDING)
+  absher_ref      String?
+  approved_at     DateTime?
+  created_at      DateTime   @default(now())
+  user            User       @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  documents       Document[]
+  applications    Application[]
+  wallet_items    WalletItem[]
+}
+
+model Document {
+  id          String     @id @default(uuid())
+  investor_id String
+  type        DocType
+  file_key    String
+  file_hash   String
+  status      DocStatus  @default(PENDING)
+  uploaded_at DateTime   @default(now())
+  investor    Investor   @relation(fields: [investor_id], references: [id], onDelete: Cascade)
+  wallet_items WalletItem[]
+}
+
+model WalletItem {
+  id          String    @id @default(uuid())
+  investor_id String
+  document_id String
+  reuse_count Int       @default(0)
+  last_used   DateTime?
+  investor    Investor  @relation(fields: [investor_id], references: [id], onDelete: Cascade)
+  document    Document  @relation(fields: [document_id], references: [id], onDelete: Cascade)
+
+  @@unique([investor_id, document_id])
+}
+
+model Application {
+  id             String        @id @default(uuid())
+  investor_id    String
+  opportunity_id String?
+  status         AppStatus     @default(DRAFT)
+  absher_ref     String?
+  submitted_at   DateTime?
+  resolved_at    DateTime?
+  created_at     DateTime      @default(now())
+  investor       Investor      @relation(fields: [investor_id], references: [id], onDelete: Cascade)
+  opportunity    Opportunity?  @relation(fields: [opportunity_id], references: [id])
+  status_history StatusEvent[]
+}
+
+model StatusEvent {
+  id             String      @id @default(uuid())
+  application_id String
+  status         AppStatus
+  note           String?
+  created_at     DateTime    @default(now())
+  application    Application @relation(fields: [application_id], references: [id], onDelete: Cascade)
+}
+
+model Opportunity {
+  id                  String           @id @default(uuid())
+  title_en            String
+  title_ar            String
+  sector              String
+  description_en      String
+  description_ar      String
+  min_investment      Float
+  max_investment      Float
+  currency            String           @default("SAR")
+  expected_roi_min    Float
+  expected_roi_max    Float
+  risk_level          RiskLevel
+  sdg_goals           Int[]
+  vision_2030_pillars String[]
+  incentives          String?
+  status              OppStatus        @default(ACTIVE)
+  created_at          DateTime         @default(now())
+  score               OpportunityScore?
+  applications        Application[]
+}
+
+model OpportunityScore {
+  id              String      @id @default(uuid())
+  opportunity_id  String      @unique
+  financial_score Float
+  risk_score      Float
+  vision_score    Float
+  sdg_score       Float
+  composite       Float
+  calculated_at   DateTime    @default(now())
+  opportunity     Opportunity @relation(fields: [opportunity_id], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  user_id     String?
+  entity_type String
+  entity_id   String
+  action      String
+  metadata    Json?
+  ip_address  String?
+  created_at  DateTime @default(now())
+  user        User?    @relation(fields: [user_id], references: [id])
+}
