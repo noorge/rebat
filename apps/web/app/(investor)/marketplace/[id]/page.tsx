@@ -145,19 +145,6 @@ export default function OpportunityDetailPage() {
         </div>
       )}
 
-      {/* Apply button in sidebar */}
-      <div className="rounded-2xl border border-slate-100 bg-white shadow-sm p-4">
-        {canInvest ? (
-          <Button className="w-full" size="lg" onClick={apply} disabled={applying || applied}>
-            {applied ? t('market_detail_applied') : applying ? t('market_detail_applying') : t('market_detail_apply')}
-          </Button>
-        ) : (
-          <>
-            <Button className="w-full" size="lg" disabled>{t('market_detail_locked')}</Button>
-            <p className="text-xs text-slate-400 text-center mt-2">{t('market_detail_kyc_req')}</p>
-          </>
-        )}
-      </div>
     </div>
   )
 
@@ -176,14 +163,28 @@ export default function OpportunityDetailPage() {
         {/* LEFT — main content */}
         <div className="flex-1 min-w-0 space-y-6">
 
-          {/* Title + badges */}
-          <div className={isRTL ? 'text-right' : ''}>
-            <div className={`flex gap-2 mb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <Badge variant="outline">{opp.sector}</Badge>
-              <Badge variant={riskVariant as any}>{riskLabel}</Badge>
+          {/* Title + badges + apply */}
+          <div className={`flex items-start justify-between gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div className={isRTL ? 'text-right' : ''}>
+              <div className={`flex gap-2 mb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <Badge variant="outline">{opp.sector}</Badge>
+                <Badge variant={riskVariant as any}>{riskLabel}</Badge>
+              </div>
+              <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
+              <p className="text-slate-400 text-sm mt-0.5">{isRTL ? opp.title_en : opp.title_ar}</p>
             </div>
-            <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
-            <p className="text-slate-400 text-sm mt-0.5">{isRTL ? opp.title_en : opp.title_ar}</p>
+            <div className="flex-shrink-0">
+              {canInvest ? (
+                <Button size="lg" onClick={apply} disabled={applying || applied}>
+                  {applied ? t('market_detail_applied') : applying ? t('market_detail_applying') : t('market_detail_apply')}
+                </Button>
+              ) : (
+                <div className="text-center">
+                  <Button size="lg" disabled>{t('market_detail_locked')}</Button>
+                  <p className="text-xs text-slate-400 mt-1">{t('market_detail_kyc_req')}</p>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Stats row */}
