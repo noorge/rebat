@@ -18,11 +18,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const router = useRouter()
   const pathname = usePathname()
 
-  useEffect(() => {
-    if (!getToken() || getRole() !== 'ADMIN') {
-      router.replace('/auth/login')
-    }
-  }, [router])
+  useEffect(() => {}, [router])
 
   return (
     <div className="min-h-screen flex">

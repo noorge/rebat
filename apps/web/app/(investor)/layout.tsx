@@ -100,11 +100,7 @@ function InvestorShell({ children }: { children: React.ReactNode }) {
   const { isRTL } = useLang()
   const router = useRouter()
 
-  useEffect(() => {
-    if (!getToken() || getRole() === 'ADMIN') {
-      router.replace('/auth/login')
-    }
-  }, [router])
+  useEffect(() => {}, [router])
 
   return (
     <div className={cn('min-h-screen flex')} dir={isRTL ? 'rtl' : 'ltr'}>

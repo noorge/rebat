@@ -17,9 +17,9 @@ export default function AdminDashboard() {
     Promise.all([
       apiFetch('/admin/investors?limit=5', { token }),
       apiFetch('/admin/audit-logs?limit=8', { token }),
-    ]).then(([i, l]) => {
+    ]).then(([i, l]: any[]) => {
       setInvestors(i)
-      setLogs(l.data)
+      setLogs(l?.data ?? [])
     }).catch(console.error)
   }, [])
 

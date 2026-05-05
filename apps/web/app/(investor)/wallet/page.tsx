@@ -7,7 +7,7 @@ import { useLang } from '@/lib/lang-context'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Lock, Upload, TrendingUp, Store, Globe, Landmark, Star, CheckCircle2, FileText } from 'lucide-react'
+import { Lock, Upload, TrendingUp, Store, Globe, Landmark, CheckCircle2, FileText } from 'lucide-react'
 
 const MINISTRIES = [
   {
@@ -40,15 +40,7 @@ const MINISTRIES = [
     descKey:   'ministry_sama_desc'   as const,
     icon:      Landmark,
     color:     'amber',
-    required:  false,
-  },
-  {
-    key:       'INVEST_SA',
-    nameKey:   'ministry_invest_name' as const,
-    descKey:   'ministry_invest_desc' as const,
-    icon:      Star,
-    color:     'rose',
-    required:  false,
+    required:  true,
   },
 ] as const
 
@@ -57,7 +49,6 @@ const COLOR_MAP = {
   blue:    { bg: 'bg-blue-50',     icon: 'bg-blue-100 text-blue-600',       border: 'border-blue-200',    badge: 'text-blue-700 bg-blue-100'       },
   violet:  { bg: 'bg-violet-50',   icon: 'bg-violet-100 text-violet-600',   border: 'border-violet-200',  badge: 'text-violet-700 bg-violet-100'   },
   amber:   { bg: 'bg-amber-50',    icon: 'bg-amber-100 text-amber-600',     border: 'border-amber-200',   badge: 'text-amber-700 bg-amber-100'     },
-  rose:    { bg: 'bg-rose-50',     icon: 'bg-rose-100 text-rose-600',       border: 'border-rose-200',    badge: 'text-rose-700 bg-rose-100'       },
 } as const
 
 const STATUS_MAP = {

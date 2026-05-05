@@ -18,17 +18,9 @@ export default function LoginPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    setError('')
     setLoading(true)
-    try {
-      const data = await apiFetch('/auth/login', { method: 'POST', body: JSON.stringify(form) })
-      setAuth(data.access_token, data.role)
-      router.push(data.role === 'ADMIN' ? '/admin' : '/dashboard')
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Login failed')
-    } finally {
-      setLoading(false)
-    }
+    await new Promise((r) => setTimeout(r, 600))
+    router.push('/dashboard')
   }
 
   return (

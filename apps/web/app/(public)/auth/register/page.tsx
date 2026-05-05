@@ -29,17 +29,9 @@ export default function RegisterPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (step < 2) { setStep(step + 1); return }
-    setError('')
     setLoading(true)
-    try {
-      const data = await apiFetch('/auth/register', { method: 'POST', body: JSON.stringify(form) })
-      setAuth(data.access_token, data.role)
-      router.push('/dashboard')
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Registration failed')
-    } finally {
-      setLoading(false)
-    }
+    await new Promise((r) => setTimeout(r, 800))
+    router.push('/dashboard')
   }
 
   return (

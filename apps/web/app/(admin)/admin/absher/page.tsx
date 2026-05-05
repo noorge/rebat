@@ -19,7 +19,7 @@ function AbsherContent() {
 
   useEffect(() => {
     apiFetch('/admin/investors?limit=50', { token: getToken()! })
-      .then((d) => setInvestors(d.data.filter((i: any) => i.kyc_status === 'SUBMITTED_TO_ABSHER')))
+      .then((d: any) => setInvestors((d?.data ?? []).filter((i: any) => i.kyc_status === 'SUBMITTED_TO_ABSHER')))
       .catch(console.error)
       .finally(() => setLoading(false))
   }, [])
@@ -27,12 +27,12 @@ function AbsherContent() {
   async function simulate(investorId: string, status: 'approved' | 'rejected') {
     setProcessing(investorId)
     try {
-      const res = await apiFetch(`/admin/absher/simulate/${investorId}`, {
+      const res: any = await apiFetch(`/admin/absher/simulate/${investorId}`, {
         method: 'POST',
         token: getToken()!,
         body: JSON.stringify({ status }),
       })
-      setResults((r) => ({ ...r, [investorId]: res.message }))
+      setResults((r) => ({ ...r, [investorId]: res?.message ?? 'Done' }))
       setInvestors((prev) => prev.filter((i) => i.id !== investorId))
     } catch (err: unknown) {
       setResults((r) => ({ ...r, [investorId]: err instanceof Error ? err.message : 'Failed' }))
