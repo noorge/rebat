@@ -127,13 +127,20 @@ export default function MarketplacePage() {
                       </div>
 
                       {opp.sdg_goals?.length > 0 && (
-                        <div className="flex items-center gap-1.5 mt-3 flex-wrap">
-                          <span className="text-xs text-slate-400">{t('market_sdg')}</span>
-                          {opp.sdg_goals.map((g: number) => (
-                            <span key={g} className="text-xs bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded-md font-medium">
-                              SDG {g}
-                            </span>
-                          ))}
+                        <div className="flex items-center gap-2 mt-3 flex-wrap">
+                          <span className="text-xs text-slate-400 font-medium">{t('market_sdg')}</span>
+                          {opp.sdg_goals.map((g: number) => {
+                            const colors: Record<number, string> = { 1:'#E5243B',2:'#DDA63A',3:'#4C9F38',7:'#FCC30B',8:'#A21942',9:'#FD6925',10:'#DD1367',11:'#FD9D24',12:'#BF8B2E',13:'#3F7E44',14:'#0A97D9',17:'#19486A' }
+                            const c = colors[g] || '#64748b'
+                            return (
+                              <span key={g}
+                                className="text-xs font-bold px-2 py-0.5 rounded-lg text-white"
+                                style={{ background: c }}
+                              >
+                                {g}
+                              </span>
+                            )
+                          })}
                         </div>
                       )}
                     </div>

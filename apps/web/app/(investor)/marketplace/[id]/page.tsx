@@ -11,17 +11,31 @@ import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import Link from 'next/link'
 
-const SDG_LABELS: Record<number, { en: string; ar: string }> = {
-  3:  { en: 'Good Health',             ar: 'الصحة الجيدة'             },
-  7:  { en: 'Clean Energy',            ar: 'الطاقة النظيفة'            },
-  8:  { en: 'Decent Work',             ar: 'العمل اللائق'              },
-  9:  { en: 'Industry & Innovation',   ar: 'الصناعة والابتكار'         },
-  10: { en: 'Reduced Inequalities',    ar: 'الحد من التفاوتات'         },
-  11: { en: 'Sustainable Cities',      ar: 'المدن المستدامة'           },
-  12: { en: 'Responsible Consumption', ar: 'الاستهلاك المسؤول'         },
-  13: { en: 'Climate Action',          ar: 'العمل المناخي'             },
-  14: { en: 'Life Below Water',        ar: 'الحياة تحت الماء'          },
-  17: { en: 'Partnerships',            ar: 'الشراكات'                  },
+const SDG_META: Record<number, { en: string; ar: string; color: string }> = {
+  1:  { en: 'No Poverty',              ar: 'القضاء على الفقر',          color: '#E5243B' },
+  2:  { en: 'Zero Hunger',             ar: 'القضاء على الجوع',          color: '#DDA63A' },
+  3:  { en: 'Good Health',             ar: 'الصحة الجيدة',             color: '#4C9F38' },
+  7:  { en: 'Clean Energy',            ar: 'الطاقة النظيفة',            color: '#FCC30B' },
+  8:  { en: 'Decent Work',             ar: 'العمل اللائق',              color: '#A21942' },
+  9:  { en: 'Industry & Innovation',   ar: 'الصناعة والابتكار',         color: '#FD6925' },
+  10: { en: 'Reduced Inequalities',    ar: 'الحد من التفاوتات',         color: '#DD1367' },
+  11: { en: 'Sustainable Cities',      ar: 'المدن المستدامة',           color: '#FD9D24' },
+  12: { en: 'Responsible Consumption', ar: 'الاستهلاك المسؤول',         color: '#BF8B2E' },
+  13: { en: 'Climate Action',          ar: 'العمل المناخي',             color: '#3F7E44' },
+  14: { en: 'Life Below Water',        ar: 'الحياة تحت الماء',          color: '#0A97D9' },
+  17: { en: 'Partnerships',            ar: 'الشراكات',                  color: '#19486A' },
+}
+
+const VISION_META: Record<string, { en: string; ar: string }> = {
+  DIGITAL_ECONOMY:             { en: 'Digital Economy',             ar: 'الاقتصاد الرقمي'           },
+  URBAN_DEVELOPMENT:           { en: 'Urban Development',           ar: 'التطوير العمراني'           },
+  CLEAN_ENERGY:                { en: 'Clean Energy',                ar: 'الطاقة النظيفة'             },
+  TOURISM:                     { en: 'Tourism',                     ar: 'السياحة'                    },
+  ENVIRONMENTAL_SUSTAINABILITY: { en: 'Environmental Sustainability', ar: 'الاستدامة البيئية'          },
+  INDUSTRIAL_DEVELOPMENT:      { en: 'Industrial Development',      ar: 'التطوير الصناعي'            },
+  FOOD_SECURITY:               { en: 'Food Security',               ar: 'الأمن الغذائي'              },
+  CULTURAL_HERITAGE:           { en: 'Cultural Heritage',           ar: 'التراث الثقافي'             },
+  REGIONAL_DEVELOPMENT:        { en: 'Regional Development',        ar: 'التطوير الإقليمي'           },
 }
 
 export default function OpportunityDetailPage() {
@@ -156,38 +170,88 @@ export default function OpportunityDetailPage() {
         </Card>
       )}
 
-      <div className="grid grid-cols-2 gap-4">
-        {opp.vision_2030_pillars?.length > 0 && (
-          <Card>
-            <CardHeader><CardTitle>{t('market_detail_vision_pillars')}</CardTitle></CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-2">
-                {opp.vision_2030_pillars.map((p: string) => (
-                  <Badge key={p} variant="info">{p.replace(/_/g, ' ')}</Badge>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        )}
+      {opp.sdg_goals?.length > 0 && (
+        <div>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="flex-1 h-px bg-slate-100" />
+            <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+              {isRTL ? 'أهداف التنمية المستدامة للأمم المتحدة' : 'UN Sustainable Development Goals'}
+            </div>
+            <div className="flex-1 h-px bg-slate-100" />
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            {opp.sdg_goals.map((g: number) => {
+              const meta = SDG_META[g]
+              if (!meta) return null
+              return (
+                <div
+                  key={g}
+                  className="rounded-2xl p-4 flex items-center gap-3"
+                  style={{ background: meta.color + '15', border: `1.5px solid ${meta.color}40` }}
+                >
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-white text-sm flex-shrink-0"
+                    style={{ background: meta.color }}
+                  >
+                    {g}
+                  </div>
+                  <div>
+                    <div className="text-[10px] font-bold uppercase tracking-wider" style={{ color: meta.color }}>
+                      SDG {g}
+                    </div>
+                    <div className="text-sm font-semibold text-slate-800 leading-tight mt-0.5">
+                      {isRTL ? meta.ar : meta.en}
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
 
-        {opp.sdg_goals?.length > 0 && (
-          <Card>
-            <CardHeader><CardTitle>{t('market_detail_sdg_goals')}</CardTitle></CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-2">
-                {opp.sdg_goals.map((g: number) => {
-                  const label = SDG_LABELS[g]
-                  return (
-                    <Badge key={g} variant="success">
-                      SDG {g}: {label ? (isRTL ? label.ar : label.en) : `Goal ${g}`}
-                    </Badge>
-                  )
-                })}
+      {opp.vision_2030_pillars?.length > 0 && (
+        <div>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="flex-1 h-px bg-slate-100" />
+            <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+              {isRTL ? 'ركائز رؤية المملكة 2030' : 'Saudi Vision 2030 Pillars'}
+            </div>
+            <div className="flex-1 h-px bg-slate-100" />
+          </div>
+          <div
+            className="rounded-2xl p-5"
+            style={{ background: 'linear-gradient(135deg, #004AAD08, #006C3508)', border: '1.5px solid #004AAD20' }}
+          >
+            <div className="flex items-center gap-2 mb-4">
+              <div
+                className="text-xs font-bold px-2.5 py-1 rounded-lg text-white"
+                style={{ background: 'linear-gradient(90deg, #004AAD, #006C35)' }}
+              >
+                {isRTL ? 'رؤية 2030' : 'Vision 2030'}
               </div>
-            </CardContent>
-          </Card>
-        )}
-      </div>
+              <span className="text-xs text-slate-400">
+                {isRTL ? 'المملكة العربية السعودية' : 'Kingdom of Saudi Arabia'}
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {opp.vision_2030_pillars.map((p: string) => {
+                const meta = VISION_META[p]
+                return (
+                  <div
+                    key={p}
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium"
+                    style={{ background: '#004AAD12', color: '#004AAD', border: '1px solid #004AAD25' }}
+                  >
+                    <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#006C35' }} />
+                    {meta ? (isRTL ? meta.ar : meta.en) : p.replace(/_/g, ' ')}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+      )}
 
       {opp.incentives && (
         <Card className="border-navy/10 bg-navy-light">
