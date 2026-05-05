@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { getToken, getRole, clearAuth } from '@/lib/auth'
 import { cn } from '@/lib/utils'
 import { useLang } from '@/lib/lang-context'
+import Image from 'next/image'
 import {
   LayoutDashboard, Wallet, ShieldCheck, Store, ClipboardList,
   Globe, LogOut,
@@ -37,12 +38,7 @@ function InvestorSidebar() {
       {/* Logo */}
       <div className="px-6 py-5 border-b border-white/10">
         <div className="flex items-center gap-3">
-          <div
-            className="w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm text-white flex-shrink-0"
-            style={{ background: 'linear-gradient(135deg, #CB6CE6, #9b4fc0)' }}
-          >
-            ر
-          </div>
+          <Image src="/logo.png" alt="Rebat" width={36} height={36} className="rounded-xl flex-shrink-0" />
           <div>
             <div className="font-bold text-white text-sm">{isRTL ? 'رباط' : 'Rebat'}</div>
             <div className="text-xs mt-0.5" style={{ color: '#CB6CE6' }}>{t('nav_investor_portal')}</div>

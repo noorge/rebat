@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { useLang } from '@/lib/lang-context'
 
@@ -15,12 +16,7 @@ export default function LandingPage() {
     >
       <header className="flex items-center justify-between px-8 py-5">
         <div className="flex items-center gap-3">
-          <div
-            className="w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-lg"
-            style={{ background: 'linear-gradient(135deg, #CB6CE6, #9b4fc0)' }}
-          >
-            ر
-          </div>
+          <Image src="/logo.png" alt="Rebat" width={36} height={36} className="rounded-xl" />
           <span className="text-white font-bold text-xl tracking-tight">{isRTL ? 'رباط' : 'Rebat'}</span>
         </div>
         <div className="flex items-center gap-3">

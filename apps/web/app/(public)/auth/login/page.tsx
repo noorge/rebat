@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { apiFetch } from '@/lib/utils'
@@ -40,12 +41,7 @@ export default function LoginPage() {
             </button>
           </div>
           <Link href="/" className="inline-flex items-center gap-2.5 mb-6">
-            <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-lg"
-              style={{ background: 'linear-gradient(135deg, #CB6CE6, #9b4fc0)' }}
-            >
-              ر
-            </div>
+            <Image src="/logo.png" alt="Rebat" width={40} height={40} className="rounded-xl" />
             <span className="text-white font-bold text-xl">{isRTL ? 'رباط' : 'Rebat'}</span>
           </Link>
           <h1 className="text-2xl font-bold text-white">{t('login_title')}</h1>
